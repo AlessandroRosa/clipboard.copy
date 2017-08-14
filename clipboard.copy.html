@@ -1,0 +1,164 @@
+<html>
+<head>
+<SCRIPT LANGUAGE="javascript" TYPE="text/javascript" SRC="http://code.jquery.com/jquery-latest.min.js"></SCRIPT>
+<SCRIPT LANGUAGE="javascript" TYPE="text/javascript">
+function copy_to_clipboard( _element_id, _b_html, _b_response, _text_success, _text_fail )
+{
+  var element = $("#"+_element_id).get(0) ;
+  if ( _b_html == null ) _b_html = false ;
+  if ( _b_response == null ) _b_response = true ;
+  if ( element != null )
+  {
+    var _tag_name = $("#"+_element_id).prop( "tagName" ).toLowerCase(), _contents = "" ;
+    switch( _tag_name )
+    {
+      case "input":
+      case "textarea":
+      _contents = $("#"+_element_id).val() ;
+      break ;
+      default:
+      _contents = $("#"+_element_id).html() ;
+      if ( !_b_html )
+      {
+        _contents = _contents.replace( /(&nbsp;)/g, " " );
+        _contents = _contents.replace( /(<|&lt;)br\s*\/*(>|&gt;)/g, "\n" ) ;
+        _contents = _contents.replace( /(<|&lt;)br\s*\/*(>|&gt;)/g, "\n" ) ;
+        _contents = _contents.replace( /<(?:.|\n)*?>/gm,''); // strip out all tags
+      }
+      break ;
+    }
+    var $temp = $("<textarea>");
+    $("body").append($temp);
+    $temp.val( _contents ).select();
+    var _ret = 1 ;
+    try{
+    document.execCommand("copy");
+    $temp.remove();
+    }
+    catch(e){ _ret = 0 ; }
+    if ( _b_response )
+      {
+        if ( _ret )
+          alert( _text_success != null ? _text_success : "Contents copied into Clipboard with success!" );
+        else alert( _text_fail != null ? _text_fail : "Fail to copy contents into Clipboard" );
+      }
+  }
+}
+</SCRIPT>
+<STYLE TYPE="text/css">
+body
+{
+  background-color:#CED8EE;
+  padding:0;
+  margin:0;
+}
+
+div, textarea, button
+{
+  font-family:tahoma;
+}
+
+#wrapper
+{
+  width:450px;
+  margin:auto;
+  padding:4px;
+}
+
+#titlediv
+{
+  font-family:tahoma;
+  font-size:14pt;
+  text-align:center;
+  color:blue;
+}
+
+#subdiv
+{
+  font-family:tahoma;
+  font-size:11pt;
+  color:#454545;
+  text-align:center;
+}
+
+#subtitlediv
+{
+  font-family:tahoma;
+  font-size:11pt;
+  text-align:center;
+  color:blue;
+}
+
+#contents, #text2
+{
+  background-color:#F9FFEE;
+  float:left;
+  padding:5px;
+}
+
+textarea
+{
+  font-size:12pt;
+  padding:3px;
+  height:100px;
+  width:auto;
+}
+
+button
+{
+  border-radius:5px;
+  padding:4px;
+  font-size:11pt;
+  display: inline-block;
+}
+</STYLE>
+</head>
+<body>
+  <div STYLE="height:10px;"></div>
+
+  <div ID="titlediv">This EXAMPLE illustrates how contents inside different tags can be copied into the clipboard.</div>
+  <div ID="subdiv">(It extends some code originally developed <a TARGET="_blank" HREF="https://codepen.io/shaikmaqsood/pen/XmydxJ">here</a>)</div>
+  <div STYLE="height:20px;"></div>
+  <div ID="subtitlediv">Click on buttons to copy different contents
+  </div>
+
+  <div STYLE="height:20px;"></div>
+
+  <div ID="wrapper">
+    <div ID="contents"><p VALIGN="top" ID="text0">let's start with this !</p></div>
+    <div><button ONCLICK="javascript:copy_to_clipboard('text0');">Copy contents from tag P</button></div>
+  </div>
+
+<div STYLE="height:50px;"></div>
+
+<div ID="wrapper">
+  <div ID="contents"><textarea ID="text1">some
+    multiline
+    text ...</textarea></div>
+  <div><button ONCLICK="javascript:copy_to_clipboard('text1');">Copy contents from Textarea</button></div>
+</div>
+
+<div STYLE="height:90px;"></div>
+
+  <div ID="wrapper">
+<div ID="text2">more text<br>line2<br/><SPAN STYLE="color:green;">line3</SPAN></div>
+<div><button ONCLICK="javascript:copy_to_clipboard('text2',true);">Copy HTML contents from DIV</button></div>
+<div><button ONCLICK="javascript:copy_to_clipboard('text2',false,false);">Copy PLAIN contents from DIV (silently)</button></div>
+  </div>
+
+<div STYLE="height:50px;"></div>
+
+<div ID="wrapper">
+  <div ID="contents"><input ID="text4" VALUE="text into input"></div>
+  <div><button ONCLICK="javascript:copy_to_clipboard('text4',false,true,'We copied it !\n(This is a custom message)');">Copy contents from Input box</button></div>
+</div>
+
+<div STYLE="height:50px;"></div>
+
+<div ID="wrapper">
+  <div ID="contents"><table><tr><td ID="tdcell_1">Data inside a table cell</td></tr></table></div>
+  <div><button ONCLICK="javascript:copy_to_clipboard('tdcell_1');">Copy contents from TD</button></div>
+</div>
+
+</body>
+</html>
