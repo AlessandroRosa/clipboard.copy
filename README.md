@@ -1,4 +1,4 @@
-# clipboard.copy
+# clipboard copy
 Javascript snippet for copy data into clipboard
 
 This is a snippet, written in Javascript, for copying contents inside different tags (p,div,td,input,textarea,...) into clipboard.
